@@ -1,8 +1,14 @@
 package be.vdab.pizzaluigi.web;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
+
+//import org.springframework.boot.web.servlet.server.Session.Cookie;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,7 +22,8 @@ import be.vdab.pizzaluigi.valueobjects.Persoon;
 class IndexController {
 
 	@GetMapping
-	ModelAndView index() {
+	ModelAndView index(@CookieValue(name = "laatstBezocht", required = false)
+	String laatstBezocht, HttpServletResponse response) {
 		String boodschap;
 		int uur = LocalTime.now().getHour();
 		if (uur < 12) {
@@ -26,11 +33,18 @@ class IndexController {
 		} else {
 			boodschap = "Goede avond";
 		}
-		return new ModelAndView("index", "boodschap", boodschap)
-				.addObject("zaakvoerder", new Persoon("Luigi", "Peperone", 7, true,
- 						new Adres("Grote Markt", "3", 9700, "Oudenaarde")));
-				
-			
-	}
 		
-}
+		Cookie cookie = new Cookie("laatstBezocht", LocalDateTime.now().toString());
+		cookie.setMaxAge(31_536_000);
+		response.addCookie(cookie);
+		ModelAndView modelAndView = new ModelAndView("index", "boodschap", boodschap)
+				.addObject("zaakvoerder", new Persoon("Luigi", "Peperone", 7, true,
+ 					new Adres("Grote Markt", "3", 9700, "Oudenaarde")));
+		if (laatstBezocht != null) {
+			modelAndView.addObject("laatstBezocht", laatstBezocht);
+		}
+		return modelAndView;
+	
+	}		
+}		
+
