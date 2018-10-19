@@ -8,17 +8,26 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
 import be.vdab.pizzaluigi.entities.Pizza;
-import be.vdab.pizzaluigi.web.PizzaController;
+import be.vdab.pizzaluigi.services.EuroService;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PizzaControllerTest {
 	
 	private PizzaController controller;
+	private PizzaController pizzaController;
+	
+	@Mock
+	private EuroService dummyEuroService;
+	
 	@Before
 	public void before() {
-		controller = new PizzaController();
+		pizzaController = new PizzaController(dummyEuroService);
 	}
 	@Test
 	public void pizzaWerktSamenMetDeJspPizza() {
