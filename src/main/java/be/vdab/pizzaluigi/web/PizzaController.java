@@ -2,9 +2,11 @@ package be.vdab.pizzaluigi.web;
 
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -68,5 +70,28 @@ public class PizzaController {
 				.addObject("prijzen", pizzaService.findUniekePrijzen());
 	}
 	
+	private static final String VAN_TOT_PRIJS_VIEW = "vantotprijs";
+	@GetMapping("vantotprijs")
+	ModelAndView findVanTotPrijs() {
+		VanTotPrijsForm form = new VanTotPrijsForm();
+		form.setVan(BigDecimal.ZERO);
+		form.setTot(BigDecimal.ZERO);
+		return new ModelAndView(VAN_TOT_PRIJS_VIEW).addObject(form);
+	}
+	
+	@GetMapping(params = {"van", "tot"})
+	ModelAndView findVanTotPrijs(VanTotPrijsForm form, BindingResult bindingResult) {
+		ModelAndView modelAndView = new ModelAndView(VAN_TOT_PRIJS_VIEW);
+		if (bindingResult.hasErrors()) {
+			return modelAndView;
+		}
+		List<Pizza> pizzas = pizzaService.findByPrijsBetween(form.getVan(), form.getTot());
+		if (pizzas.isEmpty()) {
+			bindingResult.reject("geenPizzas");
+		} else {
+			modelAndView.addObject("pizzas", pizzas);
+		}
+		return modelAndView;
+	}
 
 }
