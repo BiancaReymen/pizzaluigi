@@ -2,8 +2,13 @@ package be.vdab.pizzaluigi.web;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
 class VanTotPrijsForm {
+	@NotNull @PositiveOrZero
 	private BigDecimal van;
+	@NotNull @PositiveOrZero
 	private BigDecimal tot;
 	
 	public BigDecimal getVan() {
