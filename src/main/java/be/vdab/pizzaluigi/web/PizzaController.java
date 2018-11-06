@@ -11,8 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import be.vdab.pizzaluigi.entities.Pizza;
 import be.vdab.pizzaluigi.services.EuroService;
@@ -27,12 +29,8 @@ public class PizzaController {
 	private static final String PRIJZEN_VIEW = "prijzen";
 	private final EuroService euroService;
 	private final PizzaService pizzaService;
+	private static final String REDIRECT_URL_NA_TOEVOEGEN="redirect:/pizzas";
 	
-	
-//	private final List<Pizza> pizzas = Arrays.asList(
-//			new Pizza(1, "Prosciutto", BigDecimal.valueOf(4), true),
-//			new Pizza(2, "Margherita", BigDecimal.valueOf(5), false),
-//			new Pizza(3, "Calzone", BigDecimal.valueOf(4), false));
 	private final Map<Long, Pizza> pizzas = new LinkedHashMap<>();
 	PizzaController(EuroService euroService, PizzaService pizzaService){
 		pizzas.put(1L, new Pizza(1, "Prosciutto", BigDecimal.valueOf(4), true));
@@ -94,6 +92,20 @@ public class PizzaController {
 			modelAndView.addObject("pizzas", pizzas);
 		}
 		return modelAndView;
+	}
+	private static final String TOEVOEGEN_VIEW  = "toevoegen";
+	@GetMapping("toevoegen")
+	ModelAndView toevoegen() {
+		return new ModelAndView(TOEVOEGEN_VIEW).addObject(new Pizza());
+	}
+	@PostMapping("toevoegen")
+	ModelAndView toevoegen (@Valid Pizza pizza, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
+			redirectAttributes.addAttribute("boodschap","Pizza toegevoegd");
+			return new ModelAndView(TOEVOEGEN_VIEW);
+		}
+	pizzaService.create(pizza);
+	return new ModelAndView(REDIRECT_URL_NA_TOEVOEGEN);
 	}
 
 }

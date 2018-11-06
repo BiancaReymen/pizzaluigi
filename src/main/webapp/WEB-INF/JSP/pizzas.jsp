@@ -8,8 +8,16 @@
 	<c:param name="title" value="Pizza's" />
 </c:import>
 </head>
+<script>
+document.getElementById('pizzaform').onsubmit = function(){
+	document.getElementById('toevoegknop').disabled = true;
+};
+</script>
 <body>
 	<c:import url="/WEB-INF/JSP/menu.jsp" />
+	<c:if test='${not empty param.boodschap }'>
+		<div class='boodschap'>${param.boodschap}</div>
+	</c:if>
 	<h1>
 		Pizza's
 		<c:forEach begin="1" end="5">
