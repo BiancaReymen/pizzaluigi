@@ -27,13 +27,13 @@ document.getElementById('pizzaform').onsubmit = function(){
 	<ul class='zebra'>
 		<c:forEach var='pizza' items='${pizzas}'>
 
-			<li>${pizza.id}: <c:out value="${pizza.naam}"/> ${pizza.prijs}
+			<li>${pizza.id}: <c:out value="${pizza.naam}" /> ${pizza.prijs}
 				&euro; <c:choose>
-					<c:when test="${pizza.pikant}"> pikant </c:when>
+					<c:when test="${pizza.pikant }"> pikant </c:when>
 					<c:otherwise>niet pikant</c:otherwise>
 				</c:choose> <spring:url value="/pizzas/{id}" var="url">
 					<spring:param name="id" value="${pizza.id}" />
-				</spring:url> <a href="${url}">Detail</a>
+				</spring:url> <a href="${url} }">Detail</a>
 			</li>
 		</c:forEach>
 	</ul>
