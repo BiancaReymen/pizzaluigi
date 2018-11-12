@@ -29,5 +29,6 @@
 		<p> Je bezocht onze website laatst op ${laatstBezocht} </p>
 	</c:if>
 	<p>Deze pagina werd ${aantalKeerBekeken} keer bekeken.</p>
+	<p>${identificatie.emailAdres}</p>
 </body>
 </html>

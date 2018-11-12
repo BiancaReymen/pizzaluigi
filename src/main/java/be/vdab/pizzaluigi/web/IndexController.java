@@ -23,6 +23,11 @@ import be.vdab.pizzaluigi.valueobjects.Persoon;
 class IndexController {
 	
 	private final AtomicInteger aantalKeerBekeken = new AtomicInteger();
+	private final Identificatie identificatie;
+	
+	IndexController(Identificatie identificatie) {
+		this.identificatie = identificatie;
+	}
 
 	@GetMapping
 	ModelAndView index(@CookieValue(name = "laatstBezocht", required = false)
@@ -43,7 +48,9 @@ class IndexController {
 		ModelAndView modelAndView = new ModelAndView("index", "boodschap", boodschap)
 				.addObject("zaakvoerder", new Persoon("Luigi", "Peperone", 7, true,
  					new Adres("Grote Markt", "3", 9700, "Oudenaarde")))
-			    .addObject("aantalKeerBekeken", aantalKeerBekeken.incrementAndGet());
+			    .addObject("aantalKeerBekeken", aantalKeerBekeken.incrementAndGet())
+			    .addObject("identificatie", identificatie);
+		
 		if (laatstBezocht != null) {
 			modelAndView.addObject("laatstBezocht", laatstBezocht);
 		}
