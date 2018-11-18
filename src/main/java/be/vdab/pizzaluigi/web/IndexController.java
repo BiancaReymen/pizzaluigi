@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import be.vdab.pizzaluigi.valueobjects.Adres;
+import be.vdab.pizzaluigi.valueobjects.DatumTijd;
 import be.vdab.pizzaluigi.valueobjects.Persoon;
 
 @Controller
@@ -52,7 +53,7 @@ class IndexController {
 			    .addObject("identificatie", identificatie);
 		
 		if (laatstBezocht != null) {
-			modelAndView.addObject("laatstBezocht", laatstBezocht);
+			modelAndView.addObject("laatstBezocht", new DatumTijd(LocalDateTime.parse(laatstBezocht)));
 		}
 		return modelAndView;
 	
