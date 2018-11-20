@@ -1,12 +1,11 @@
 <%@page contentType='text/html' pageEncoding='UTF-8' session='false'%>
+<%@taglib prefix='vdab' uri='http://vdab.be/tags'%>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
 <%@taglib prefix='spring' uri='http://www.springframework.org/tags'%>
 <!doctype html>
 <html lang='nl'>
 <head>
-<c:import url="/WEB-INF/JSP/head.jsp">
-	<c:param name="title" value="Pizza's" />
-</c:import>
+<vdab:head title='Pizza's'/>
 </head>
 <script>
 document.getElementById('pizzaform').onsubmit = function(){
@@ -14,7 +13,7 @@ document.getElementById('pizzaform').onsubmit = function(){
 };
 </script>
 <body>
-	<c:import url="/WEB-INF/JSP/menu.jsp" />
+	<vdab:menu/>
 	<c:if test='${not empty param.boodschap }'>
 		<div class='boodschap'>${param.boodschap}</div>
 	</c:if>
